@@ -62,7 +62,7 @@ void find_bench(benchmark::State& state) {
     static std::atomic<size_t> ops_count_global {0};
     size_t ops_count {0};
     size_t local_thread_offset {static_cast<size_t>(std::rand())};
-    if (state.thread_index == 0) {
+    if (state.thread_index() == 0) {
         map = new_map<map_at>();
         ops_count_global = 0;
     }
@@ -71,7 +71,7 @@ void find_bench(benchmark::State& state) {
         benchmark::DoNotOptimize(map.contains(keys[(++ops_count + local_thread_offset) & overflow_mask]));
 
     ops_count_global += ops_count;
-    if (state.thread_index == 0) {
+    if (state.thread_index() == 0) {
         std::this_thread::sleep_for(1s);
         state.counters["entries/core/s"] = benchmark::Counter(ops_count_global.load(), benchmark::Counter::kAvgThreadsRate);
         map.clear();

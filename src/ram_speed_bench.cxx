@@ -38,7 +38,7 @@ void find_bench(benchmark::State& state) {
     static map_at map;
 
     // Let's continue filling this map from where we have left.
-    if (state.thread_index == 0) {
+    if (state.thread_index() == 0) {
         auto it = pregenerated_keys.begin() + map.size();
         auto end = pregenerated_keys.begin() + map_size;
         for (; it != end; ++it)
@@ -53,8 +53,8 @@ void find_bench(benchmark::State& state) {
         ops_count++;
     }
 
-    if (state.thread_index == 0) {
-        auto lookups = wanted_iterations * state.threads;
+    if (state.thread_index() == 0) {
+        auto lookups = wanted_iterations * state.threads();
         auto bytes = bytes_per_entry * lookups;
         state.counters["lookups/s"] = benchmark::Counter(lookups, benchmark::Counter::kIsRate);
         state.counters["bytes/s"] =
@@ -86,8 +86,8 @@ void memcpy_bench(benchmark::State& state) {
             std::memcpy(local_copy.data(), pregenerated_keys.data() + chunk_idx * entries_per_copy, bytes_per_copy));
     }
 
-    if (state.thread_index == 0) {
-        auto copies = wanted_iterations * state.threads;
+    if (state.thread_index() == 0) {
+        auto copies = wanted_iterations * state.threads();
         auto bytes = bytes_per_copy * copies;
         state.counters["copies/s"] = benchmark::Counter(copies, benchmark::Counter::kIsRate);
         state.counters["bytes/s"] =

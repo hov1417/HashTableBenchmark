@@ -103,6 +103,7 @@ set(CMAKE_USE_PTHREADS_INIT 1)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+
 #######################################################################################################################
 # Build tests benchmarks
 #######################################################################################################################
@@ -113,7 +114,9 @@ include(FetchContent)
 FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/e2239ee6043f73722e7aa812a459f54a28552929.zip)
 FetchContent_MakeAvailable(googletest)
 
-FetchContent_Declare(googlebenchmark GIT_REPOSITORY https://github.com/google/benchmark)
+FetchContent_Declare(googlebenchmark
+        GIT_REPOSITORY https://github.com/google/benchmark
+        GIT_TAG main)
 FetchContent_MakeAvailable(googlebenchmark)
 
 set(CXX_TARGET_LINK_LIBRARIES gtest_main benchmark::benchmark)
@@ -142,3 +145,5 @@ target_link_libraries(mixed_ops${ARTIFACT_SUFFIX}
   ${CXX_TARGET_LINK_LIBRARIES_WITH_FLAGS}
   ${PKG_PACKAGES_LIBRARIES_WITH_FLAGS}
 )
+
+
